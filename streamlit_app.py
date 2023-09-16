@@ -358,5 +358,8 @@ with st.echo(code_location='below'):
     
     # Display results
     # (Replace with code to display the results of your script)
+    st.write("Accumulators Data")
     st.write(accumulators)
-    st.altair_chart(alt.Chart(...))
+    
+    st.write("Fresh Wallets Data")
+    st.write(fresh_wallets)

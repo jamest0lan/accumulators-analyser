@@ -12,7 +12,11 @@ from datetime import datetime, timedelta
 
 Enter a token below to find the biggest accumulators over the past 7 days.
 
-If you have any questions or notice any errors text me on [Twitter](https://discuss.streamlit.io).
+If you have any questions or notice any errors text me on [Twitter](https://twitter.com/JamesT0lan).
+
+Data Information: 
+
+This tool is analysing data over the past 7 days. CEX label identifies transactions from Binance, Crypto.com, Kucoin, Huobi, OKX, Kraken, Coinbase. Dashboard is in an early stage which may lead to some inaccuracies, some wallets might be misidentified by filters.
 
 Powered by the [Syve.ai](https://www.syve.ai/) API. 
 """
@@ -116,13 +120,7 @@ def label_fresh_wallets():
         if address in fresh_wallets["from_address"].values:
             accumulators.loc[accumulators["from_address"] == address, "fresh_wallet_labels"] = 'Fresh Wallet'
 
-def create_received_from_cex_labels(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
-    # Create a new column to identify addresses that received tokens from a CEX
-    accumulators["received_from_cex_labels"] = 'N/A'
-    
-    response = requests.get(f'https://api.syve.ai/v1/filter-api/erc20?eq:token_address={token_address}&size=100000')
-    transfers_data = response.json()
-    token_transfers = create_dataframe(transfers_data)
+2def create_cex_labels(token_address):
     
     # Define CEX addresses
     
@@ -271,14 +269,28 @@ def create_received_from_cex_labels(token_address='0xf21661d0d1d76d3ecb8e1b9f1c9
     "0xe9f7eCAe3A53D2A67105292894676b00d1FaB785"
     ]
 
+    # Create a new column to identify addresses that received tokens from a CEX and identify CEXs
+    accumulators["received_from_cex"] = 'N/A'
+    accumulators["is_a_cex"] = 'N/A'
+    
+    response = requests.get(f'https://api.syve.ai/v1/filter-api/erc20?eq:token_address={token_address}&size=100000')
+    transfers_data = response.json()
+    token_transfers = create_dataframe(transfers_data)
+    
     # Boolean Mask for transfers from CEX
     combined_addresses = binance_addresses + crypto_com_address + kucoin_addresses + okx_addresses + huobi_addresses + coinbase_addresses + kraken_addresses
     token_transfers = token_transfers[token_transfers["from_address"].isin(combined_addresses)]
     
+    # Identify addresses that have received tokens from a CEX
     for address in accumulators["from_address"]:
         if address in token_transfers["to_address"].values:
-            accumulators.loc[accumulators["from_address"] == address, "received_from_cex_labels"] = 'Received tokens from CEX'
-
+            accumulators.loc[accumulators["from_address"] == address, "received_from_cex"] = 'Y'
+    
+    # Identify addresses that have received tokens from a CEX
+    for address in accumulators["from_address"]:
+        if address in combined_addresses:
+            accumulators.loc[accumulators["from_address"] == address, "is_a_cex"] = 'Y'
+            
 def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     
     current_time = datetime.now()
@@ -335,17 +347,10 @@ def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     
     # Label fresh wallets in accumulators
     label_fresh_wallets()
-    create_received_from_cex_labels(token_address=token_address)
+    create_cex_labels(token_address=token_address)
     create_received_from_dex_labels(7, token_address=token_address)
-   
-    # Print Accumulators and Fresh Wallet DataFrames
-    print('Biggest Accumulators Over 7 Days')
-    print(accumulators)
     
-    print('Fresh Wallet Accumulators Over the Past 7 Days')
-    print(fresh_wallets)
-
-    return
+    return accumulators, fresh_wallets
 
 # Streamlit UI
 with st.echo(code_location='below'):
@@ -357,9 +362,8 @@ with st.echo(code_location='below'):
     main(token_address)
     
     # Display results
-    # (Replace with code to display the results of your script)
-    st.write("Accumulators Data")
+    st.write("Accumulators Over the Past 7 Days")
     st.write(accumulators)
     
-    st.write("Fresh Wallets Data")
+    st.write("Fresh Wallets Over the Past 7 Days")
     st.write(fresh_wallets)

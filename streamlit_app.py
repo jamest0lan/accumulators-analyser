@@ -352,7 +352,7 @@ def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
 with st.echo(code_location='below'):
     
     # Replace with the necessary inputs for your script
-    token_address = st.text_input("Enter token address", "0x1915a8de08a92b846df7c845e140e4b0714820bd")
+    token_address = st.text_input("Enter token address", "0x4c19596f5aaff459fa38b0f7ed92f11ae6543784")
     
     # Call your main function and get the results
     main(token_address)

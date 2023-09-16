@@ -1,4 +1,4 @@
-# Welcome to Streamlit!
+# Welcome to Accumulators Analyser!
 
 Enter a token below to find the biggest accumulators over the past 7 days.
 

@@ -120,7 +120,7 @@ def label_fresh_wallets():
         if address in fresh_wallets["from_address"].values:
             accumulators.loc[accumulators["from_address"] == address, "fresh_wallet_labels"] = 'Fresh Wallet'
 
-2def create_cex_labels(token_address):
+def create_cex_labels(token_address):
     
     # Define CEX addresses
     

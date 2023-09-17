@@ -114,7 +114,7 @@ def create_fresh_wallets_df(accumulators_df, filter_api):
     
 def label_fresh_wallets():
     # Create a new column with default value 'N/A'
-    accumulators["fresh_wallet_labels"] = 'N/A'
+    accumulators["fresh_wallet_labels"] = '-'
     
     for address in accumulators["from_address"]:
         if address in fresh_wallets["from_address"].values:
@@ -270,8 +270,8 @@ def create_cex_labels(token_address):
     ]
 
     # Create a new column to identify addresses that received tokens from a CEX and identify CEXs
-    accumulators["received_from_cex"] = 'N/A'
-    accumulators["is_a_cex"] = 'N/A'
+    accumulators["received_from_cex"] = '-'
+    accumulators["is_a_cex"] = '-'
     
     response = requests.get(f'https://api.syve.ai/v1/filter-api/erc20?eq:token_address={token_address}&size=100000')
     transfers_data = response.json()
@@ -284,12 +284,12 @@ def create_cex_labels(token_address):
     # Identify addresses that have received tokens from a CEX
     for address in accumulators["from_address"]:
         if address in token_transfers["to_address"].values:
-            accumulators.loc[accumulators["from_address"] == address, "received_from_cex"] = 'Y'
+            accumulators.loc[accumulators["from_address"] == address, "received_from_cex"] = 'Yes'
     
     # Identify addresses that have received tokens from a CEX
     for address in accumulators["from_address"]:
         if address in combined_addresses:
-            accumulators.loc[accumulators["from_address"] == address, "is_a_cex"] = 'Y'
+            accumulators.loc[accumulators["from_address"] == address, "is_a_cex"] = 'Yes'
             
 def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     
@@ -297,7 +297,7 @@ def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3e
     start_time = current_time - timedelta(days=time_days)
     unix_time = int(start_time.timestamp())
     
-    accumulators["received_from_dex_labels"] = 'N/A'
+    accumulators["received_from_dex_labels"] = '-'
     
     response = requests.get(f'https://api.syve.ai/v1/filter-api/dex-trades?eq:token_address={token_address}&gt:timestamp={unix_time}&size=100000')
     trades_data = response.json()
@@ -308,7 +308,7 @@ def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3e
     
     for address in accumulators["from_address"]:
         if address in token_trades["trader_address"].values:
-            accumulators.loc[accumulators["from_address"] == address, "received_from_dex_labels"] = 'Received tokens from DEX'       
+            accumulators.loc[accumulators["from_address"] == address, "received_from_dex_labels"] = 'Yes'       
             
 def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     

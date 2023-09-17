@@ -297,7 +297,7 @@ def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3e
     start_time = current_time - timedelta(days=time_days)
     unix_time = int(start_time.timestamp())
     
-    accumulators["received_from_dex_labels"] = '-'
+    accumulators["received_from_dex"] = '-'
     
     response = requests.get(f'https://api.syve.ai/v1/filter-api/dex-trades?eq:token_address={token_address}&gt:timestamp={unix_time}&size=100000')
     trades_data = response.json()
@@ -308,7 +308,7 @@ def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3e
     
     for address in accumulators["from_address"]:
         if address in token_trades["trader_address"].values:
-            accumulators.loc[accumulators["from_address"] == address, "received_from_dex_labels"] = 'Yes'       
+            accumulators.loc[accumulators["from_address"] == address, "received_from_dex"] = 'Yes'       
             
 def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     
@@ -356,7 +356,7 @@ def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
 with st.echo(code_location='below'):
     
     # Replace with the necessary inputs for your script
-    token_address = st.text_input("Enter token address", "0x4c19596f5aaff459fa38b0f7ed92f11ae6543784")
+    token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
     
     # Call your main function and get the results
     main(token_address)

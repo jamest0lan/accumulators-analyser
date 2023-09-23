@@ -310,7 +310,7 @@ def create_received_from_dex_labels(time_days, token_address='0xf21661d0d1d76d3e
         if address in token_trades["trader_address"].values:
             accumulators.loc[accumulators["from_address"] == address, "received_from_dex"] = 'Yes'       
             
-def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
+def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     
     global accumulators, fresh_wallets
     
@@ -342,15 +342,11 @@ def main(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae4097'):
     pd.set_option('display.float_format', '{:f}'.format)
     accumulators = accumulators[["from_address", "tokens_in", "tokens_out", "Accumulated"]]
     
-    # Create the fresh wallets table from the accumulators table
-    create_fresh_wallets_df(accumulators, filter_api)
-    
     # Label fresh wallets in accumulators
-    label_fresh_wallets()
     create_cex_labels(token_address=token_address)
     create_received_from_dex_labels(7, token_address=token_address)
     
-    return accumulators, fresh_wallets
+    return accumulators
 
 # Streamlit UI
 with st.echo(code_location='below'):
@@ -359,11 +355,14 @@ with st.echo(code_location='below'):
     token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
     
     # Call your main function and get the results
-    main(token_address)
+    create_accummulators(token_address)
     
     # Display results
     st.write("Accumulators Over the Past 7 Days")
     st.write(accumulators)
+
+    create_fresh_wallets_df(accumulators, filter_api)
+    label_fresh_wallets()
     
     st.write("Fresh Wallets Over the Past 7 Days")
     st.write(fresh_wallets)

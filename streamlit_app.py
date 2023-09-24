@@ -14,11 +14,11 @@ Enter a token below to find the biggest accumulators over the past 7 days.
 
 If you have any questions or notice any errors text me on [Twitter](https://twitter.com/JamesT0lan).
 
-Data Information: 
+## Data Information: 
 
 This tool is analysing data over the past 7 days. CEX label identifies transactions from Binance, Crypto.com, Kucoin, Huobi, OKX, Kraken, Coinbase. Dashboard is in an early stage which may lead to some inaccuracies, some wallets might be misidentified by filters.
 
-Powered by the [Syve.ai](https://www.syve.ai/) API. 
+### Powered by the [Syve.ai](https://www.syve.ai/) API. 
 """
 
 # Defining global variables to call in another cell

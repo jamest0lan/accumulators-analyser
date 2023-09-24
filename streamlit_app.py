@@ -345,6 +345,8 @@ def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae40
     # Label fresh wallets in accumulators
     create_cex_labels(token_address=token_address)
     create_received_from_dex_labels(7, token_address=token_address)
+
+    accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In'}, inplace=True)
     
     return accumulators
 

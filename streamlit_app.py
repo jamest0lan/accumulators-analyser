@@ -348,21 +348,21 @@ def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae40
     
     return accumulators
 
-# Streamlit UI
-with st.echo(code_location='below'):
+# Streamlit UI 
+#with st.echo(code_location='below'):
     
     # Replace with the necessary inputs for your script
-    token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
+token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
     
     # Call your main function and get the results
-    create_accummulators(token_address)
+create_accummulators(token_address)
     
     # Display results
-    st.write("Accumulators Over the Past 7 Days")
-    st.write(accumulators)
+st.write("Accumulators Over the Past 7 Days")
+st.write(accumulators)
 
-    create_fresh_wallets_df(accumulators, filter_api)
-    label_fresh_wallets()
+create_fresh_wallets_df(accumulators, filter_api)
+label_fresh_wallets()
     
-    st.write("Fresh Wallets Over the Past 7 Days")
-    st.write(fresh_wallets)
+st.write("Fresh Wallets Over the Past 7 Days")
+st.write(fresh_wallets)

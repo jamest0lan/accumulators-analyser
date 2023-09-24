@@ -354,10 +354,8 @@ def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae40
     # Replace with the necessary inputs for your script
 token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
     
-    # Call your main function and get the results
-create_accummulators(token_address)
-    
-    # Display results
+with st.spinner(text='Finding addresses accumulating...'):
+    create_accummulators(token_address)
 st.write("Accumulators Over the Past 7 Days")
 st.write(accumulators)
 

@@ -109,8 +109,6 @@ def create_fresh_wallets_df(accumulators_df, filter_api):
     fresh_wallets = pd.merge(fresh_wallets, accumulators_df, on='from_address', how='inner')
     fresh_wallets.drop(['tokens_in','tokens_out'], axis=1, inplace=True)
     fresh_wallets.reset_index(drop=True, inplace=True)
-
-    #accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In', 'tokens_out':'Tokens Out'}, inplace=True)
     
     return fresh_wallets
     
@@ -365,7 +363,9 @@ st.write("Accumulators Over the Past 7 Days")
 st.write(accumulators)
 
 with st.spinner(text='Anlysing thousands of transaction to locate fresh wallet accumulators'):
+    accumulators.rename(columns={'Wallet':'from_address', 'Tokens In':'tokens_in', 'Tokens Out':'tokens_out', 'From CEX':'received_from_cex', 'Is a CEX?':'is_a_cex', 'From DEX':'received_from_dex'}, inplace=True)
     create_fresh_wallets_df(accumulators, 'https://api.syve.ai/v1/filter-api/transactions?eq:from_address=')
-    
+    accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In', 'tokens_out':'Tokens Out'}, inplace=True)
+
 st.write("Fresh Wallets Over the Past 7 Days")
 st.write(fresh_wallets)

@@ -109,6 +109,8 @@ def create_fresh_wallets_df(accumulators_df, filter_api):
     fresh_wallets = pd.merge(fresh_wallets, accumulators_df, on='from_address', how='inner')
     fresh_wallets.drop(['tokens_in','tokens_out'], axis=1, inplace=True)
     fresh_wallets.reset_index(drop=True, inplace=True)
+
+    #accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In', 'tokens_out':'Tokens Out'}, inplace=True)
     
     return fresh_wallets
     
@@ -346,7 +348,7 @@ def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae40
     create_cex_labels(token_address=token_address)
     create_received_from_dex_labels(7, token_address=token_address)
 
-    accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In'}, inplace=True)
+    accumulators.rename(columns={'from_address':'Wallet', 'tokens_in':'Tokens In', 'tokens_out':'Tokens Out', 'received_from_cex':'From CEX', 'is_a_cex':'Is a CEX?', 'received_from_dex':'From DEX'}, inplace=True)
     
     return accumulators
 

@@ -356,11 +356,12 @@ token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072
     
 with st.spinner(text='Finding addresses accumulating...'):
     create_accummulators(token_address)
+    
 st.write("Accumulators Over the Past 7 Days")
 st.write(accumulators)
 
-create_fresh_wallets_df(accumulators, 'https://api.syve.ai/v1/filter-api/transactions?eq:from_address=')
-label_fresh_wallets()
+with st.spinner(text='Anlysing thousands of transaction to locate fresh wallet accumulators'):
+    create_fresh_wallets_df(accumulators, 'https://api.syve.ai/v1/filter-api/transactions?eq:from_address=')
     
 st.write("Fresh Wallets Over the Past 7 Days")
 st.write(fresh_wallets)

@@ -364,7 +364,7 @@ with st.spinner(text='Finding addresses accumulating...'):
 st.write("Accumulators Over the Past 7 Days")
 st.write(accumulators)
 
-with st.spinner(text='Analysing thousands of transaction to locate fresh wallet accumulators'):
+with st.spinner(text='Analysing thousands of transactions to locate fresh wallet accumulators'):
     accumulators.rename(columns={'Wallet':'from_address', 'Tokens In':'tokens_in', 'Tokens Out':'tokens_out', 'From CEX':'received_from_cex', 'Is a CEX?':'is_a_cex', 'From DEX':'received_from_dex'}, inplace=True)
     create_fresh_wallets_df(accumulators, 'https://api.syve.ai/v1/filter-api/transactions?eq:from_address=')
 

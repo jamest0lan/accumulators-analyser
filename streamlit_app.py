@@ -60,7 +60,7 @@ def create_accumulators_table(df_in, df_out):
         accumulators["Accumulated"] = accumulators["tokens_in"] - accumulators["tokens_out"]
         accumulators.sort_values(by='Accumulated', ascending=False, inplace=True)
         accumulators.rename(columns={'address':'from_address'}, inplace=True)
-        accumulators = accumulators[accumulators["Accumulated"] > 0].reset_index(drop=True)
+        accumulators = accumulators[accumulators["Accumulated"] >= 0].reset_index(drop=True)
         return accumulators
     except:
         print('Error creating accumulators table. Data might not be available on this token.')
@@ -357,6 +357,7 @@ def create_accummulators(token_address='0xf21661d0d1d76d3ecb8e1b9f1c923dbfffae40
     
     # Replace with the necessary inputs for your script
 token_address = st.text_input("Enter token address", "0xd084944d3c05cd115c09d072b9f44ba3e0e45921")
+#wallets_age = st.text_input("Enter max wallet age in days (max=10 days)", 7)
     
 with st.spinner(text='Finding addresses accumulating...'):
     create_accummulators(token_address)
